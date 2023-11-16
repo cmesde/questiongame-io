@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      cursor: none;
+      background-color: rgb(243, 133, 133);
+    }
+
+    .stationary-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .moving-button, .stationary-button button {
+      position: absolute;
+      cursor: pointer;
+      background-color: yellow;
+      color: black;
+      padding: 5px;
+    }
+
+    .paragraph {
+        position:absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-45%, -45%);
+        font-weight: bolder;
+        font-size: 40px;
+    }
+
+    .video-popup {
+      display: none;
+      position: fixed;
+      top: calc(50% + 5px); /* Adjusted position by adding 5px to the top */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      padding: 20px; /* Adjust the padding to add space around the video */
+      background-color: white;
+      border-radius: 10px; /* Optional: Add rounded corners to the video popup */
+    }
+  </style>
+</head>
+<body>
+  <div class="stationary-button">
+    <button type="button" class="btn btn-outline-secondary" onclick="playMusicAndStartVideo()">Yes!</button>
+  </div>
+
+  <div class="moving-button" id="movingButton">No!</div>
+
+  <div class="paragraph">
+    <p id="message">Do you miss me?</p>
+  </div>
+
+  <audio id="music" src=".mp3" volume="0" autoplay></audio>
+
+  <div id="videoPopup" class="video-popup">
+    <video id="videoPlayer" width="520" height="275" controls>
+      <source src="rizz1.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <script>
+    const movingButton = document.getElementById('movingButton');
+    
+    document.addEventListener('mousemove', (event) => {
+      const x = event.clientX;
+      const y = event.clientY;
+      const buttonRect = movingButton.getBoundingClientRect();
+
+      const distance = Math.sqrt(
+        Math.pow(x - (buttonRect.left + buttonRect.width / 2), 2) +
+        Math.pow(y - (buttonRect.top + buttonRect.height / 2), 2)
+      );
+
+      if (distance < 50) {
+        const maxX = window.innerWidth - buttonRect.width;
+        const maxY = window.innerHeight - buttonRect.height;
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+        movingButton.style.left = `${newX}px`;
+        movingButton.style.top = `${newY}px`;
+      }
+    });
+
+    function playMusicAndStartVideo() {
+      // Stop the music
+      const audio = document.getElementById('music');
+      audio.pause();
+      audio.currentTime = 0;
+
+      // Delay the audio by 500 milliseconds (0.5 seconds)
+      setTimeout(() => {
+        // Show the video popup after 1.5 seconds (1500 milliseconds)
+        const videoPopup = document.getElementById('videoPopup');
+        videoPopup.style.display = 'block';
+
+        // Start video playback
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.play();
+      }, 1500);
+
+      // Change the message after 3 seconds (3000 milliseconds)
+      setTimeout(() => {
+        const message = document.getElementById('message');
+        message.textContent = "Yieee miss you din ";
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
